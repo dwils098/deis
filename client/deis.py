@@ -248,6 +248,18 @@ class TextProgress(Thread):
         sys.stdout.flush()
 
 
+def check_server_version(f):
+    def wrapper(*args):
+        client = args[0]
+        server_info = json.loads(client._dispatch('get', '/info/').text)
+        if server_info['version'].rsplit('.', 1)[0] != __version__.rsplit('.', 1)[0]:
+            sys.stderr.write('WARNING: client and server versions conflict\n')
+            sys.stderr.write('Client version: ' + __version__ + '\n')
+            sys.stderr.write('Server version: ' + server_info['version'] + '\n')
+        return f(*args)
+    return wrapper
+
+
 def dictify(args):
     """Converts a list of key=val strings into a python dict.
 
@@ -379,6 +391,7 @@ class DeisClient(object):
         """
         return self.apps_list(args)
 
+    @check_server_version
     def apps_create(self, args):
         """
         Create a new application
@@ -443,6 +456,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def apps_destroy(self, args):
         """
         Destroy an application
@@ -490,6 +504,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def apps_list(self, args):
         """
         List applications visible to the current user
@@ -505,6 +520,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def apps_info(self, args):
         """
         Print info about the current application
@@ -525,6 +541,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def apps_open(self, args):
         """
         Open a URL to the application in a browser
@@ -549,6 +566,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def apps_logs(self, args):
         """
         Retrieve the most recent log events
@@ -565,6 +583,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def apps_run(self, args):
         """
         Run a command inside an ephemeral app container
@@ -599,6 +618,7 @@ class DeisClient(object):
         """
         return
 
+    @check_server_version
     def auth_register(self, args):
         """
         Register a new user with a Deis controller
@@ -643,6 +663,7 @@ class DeisClient(object):
             sys.exit(1)
         return True
 
+    @check_server_version
     def auth_cancel(self, args):
         """
         Cancel and remove the current account.
@@ -667,6 +688,7 @@ class DeisClient(object):
             else:
                 print('Accont not changed')
 
+    @check_server_version
     def auth_login(self, args):
         """
         Login by authenticating against a controller
@@ -701,6 +723,7 @@ class DeisClient(object):
             self._session.cookies.save()
             raise ResponseError(response)
 
+    @check_server_version
     def auth_logout(self, args):
         """
         Logout from a controller and clear the user session
@@ -727,6 +750,7 @@ class DeisClient(object):
         """
         return self.builds_list(args)
 
+    @check_server_version
     def builds_create(self, args):
         """
         Create a new build of an application
@@ -752,6 +776,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def builds_list(self, args):
         """
         List build history for an application
@@ -784,6 +809,7 @@ class DeisClient(object):
         """
         return self.clusters_list(args)
 
+    @check_server_version
     def clusters_create(self, args):
         """
         Create a new cluster
@@ -835,6 +861,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def clusters_info(self, args):
         """
         Print info about a cluster
@@ -850,6 +877,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def clusters_list(self, args):
         """
         List available clusters
@@ -865,6 +893,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def clusters_destroy(self, args):
         """
         Destroy a cluster
@@ -901,6 +930,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def clusters_update(self, args):
         """
         Update cluster fields
@@ -939,6 +969,7 @@ class DeisClient(object):
         args = docopt(self.config_list.__doc__)
         return self.config_list(args)
 
+    @check_server_version
     def config_list(self, args):
         """
         List environment variables for an application
@@ -975,6 +1006,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def config_set(self, args):
         """
         Set environment variables for an application
@@ -1009,6 +1041,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def config_unset(self, args):
         """
         Unset an environment variable for an application
@@ -1058,6 +1091,7 @@ class DeisClient(object):
         """
         return self.domains_list(args)
 
+    @check_server_version
     def domains_add(self, args):
         """
         Bind a domain to an application
@@ -1083,6 +1117,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def domains_remove(self, args):
         """
         Unbind a domain for an application
@@ -1107,6 +1142,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def domains_list(self, args):
         """
         List domains bound to an application
@@ -1142,6 +1178,7 @@ class DeisClient(object):
         args = docopt(self.ps_list.__doc__)
         return self.ps_list(args)
 
+    @check_server_version
     def ps_list(self, args, app=None):
         """
         List processes servicing an application
@@ -1168,6 +1205,7 @@ class DeisClient(object):
                 print("{type}.{num} {state} ({release})".format(**c))
             print()
 
+    @check_server_version
     def ps_scale(self, args):
         """
         Scale an application's processes by type
@@ -1212,6 +1250,7 @@ class DeisClient(object):
         """
         return self.keys_list(args)
 
+    @check_server_version
     def keys_add(self, args):
         """
         Add SSH keys for the logged in user
@@ -1283,6 +1322,7 @@ class DeisClient(object):
             return
         return selected_key
 
+    @check_server_version
     def keys_list(self, args):
         """
         List SSH keys for the logged in user
@@ -1303,6 +1343,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def keys_remove(self, args):
         """
         Remove an SSH key for the logged in user
@@ -1333,6 +1374,7 @@ class DeisClient(object):
         args = docopt(self.perms_list.__doc__)
         return self.perms_list(args)
 
+    @check_server_version
     def perms_list(self, args):
         """
         List all users with permission to use an app, or list all users
@@ -1347,6 +1389,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def perms_create(self, args):
         """
         Give another user permission to use an app, or give another user
@@ -1369,6 +1412,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def perms_delete(self, args):
         """
         Revoke another user's permission to use an app, or revoke another
@@ -1414,6 +1458,7 @@ class DeisClient(object):
         """
         return self.releases_list(args)
 
+    @check_server_version
     def releases_info(self, args):
         """
         Print info about a particular release
@@ -1433,6 +1478,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def releases_list(self, args):
         """
         List release history for an application
@@ -1452,6 +1498,7 @@ class DeisClient(object):
         else:
             raise ResponseError(response)
 
+    @check_server_version
     def releases_rollback(self, args):
         """
         Roll back to a previous application release.
