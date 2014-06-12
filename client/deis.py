@@ -965,8 +965,6 @@ class DeisClient(object):
 
         Use `deis help [command]` to learn more
         """
-        sys.argv[1] = 'config:list'
-        args = docopt(self.config_list.__doc__)
         return self.config_list(args)
 
     @check_server_version
