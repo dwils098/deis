@@ -1,20 +1,18 @@
-:title: Operations Guide
+:title: Deploying Deis
 :description: Step-by-step guide for operations engineers setting up a private PaaS using Deis.
 
-.. _operations:
+.. _deploying_deis:
 
-Operations Guide
+Deploying Deis
 ================
 
 :Release: |version|
 :Date: |today|
 
 .. toctree::
-    :maxdepth: 1
+
 
     provision-controller
     register-admin-user
-    manage-controller
     configure-load-balancers
     configure-dns
-    upgrading-deis

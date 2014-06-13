@@ -8,7 +8,7 @@ Components
 ==========
 
 .. toctree::
-    :maxdepth: 1
+
 
     controller
 

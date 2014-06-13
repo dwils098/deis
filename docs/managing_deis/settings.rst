@@ -1,10 +1,10 @@
-:title: Manage the Deis PaaS Controller
-:description: Learn how to manage your Deis controller.
+:title: Customizing settings
+:description: Learn how to tune custom Deis settings.
 
-.. _manage-controller:
+.. _settings:
 
-Manage the Controller
-=====================
+Customizing Deis settings
+=========================
 The following documentation will help you get set up with managing your
 Deis PaaS controller to your liking.
 

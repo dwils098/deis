@@ -85,7 +85,11 @@
             </div>
 
             <div class="span6 column_calc contents">
-              <div class="doc-content">{% block body %}{% endblock %}</div>
+              <div class="doc-content">
+                {% block body %}
+                {% endblock %}
+                {%- include "navigation.html" %}
+              </div>
             </div>
 
 
@@ -93,7 +97,7 @@
               <a class="fork" href="http://github.com/deis/deis"><div class="forkImage"></div></a>
               <div class="docs-border"></div>
               {%- include "searchbox.html" %}
-              {{ toctree(collapse=False, maxdepth=3) }}
+              {{ toctree(collapse=False, maxdepth=2) }}
               <ul class="current">
                 <li class="toctree-l1">
                   {% if READTHEDOCS %}
